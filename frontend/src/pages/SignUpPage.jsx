@@ -1,12 +1,14 @@
 import { useState } from "react";
 import { useAuthStore } from "../store/useAuthStore";
-import { Eye, EyeOff, Loader2, Mail, UserPen } from "lucide-react";
+import { Eye, EyeOff, Loader2, Mail, UserPen,IdCard } from "lucide-react";
 import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
+import { use } from "react";
 
 const SignUpPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
+    username: "",
     fullName: "",
     email: "",
     password: "",
@@ -20,6 +22,8 @@ const SignUpPage = () => {
     if (!/\S+@\S+\.\S+/.test(formData.email)) return toast.error("Invalid email format");
     if (!formData.password) return toast.error("Password is required");
     if (formData.password.length < 6) return toast.error("Password must be at least 6 characters");
+    if(!formData.username || formData.username.length < 3 || username.length > 20) return toast.error("Please create valid username");
+    if(formData.username.includes(" ")) return toast.error("Username cannot contain spaces");
 
     return true;
   };
@@ -46,6 +50,20 @@ const SignUpPage = () => {
           Join us today for a free cookie!
         </h2>
         <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Username Input */}
+          <div className="mb-4 relative">
+            <input
+              className="w-full p-2 rounded-lg bg-base-100 text-base-content placeholder:text-base-content/60 focus:outline-none focus:ring-2 focus:ring-primary focus:placeholder-opacity-0 transition duration-300"
+              type="text"
+              id="username"
+              placeholder="Username"
+              value={formData.username}
+              onChange={(e) => setFormData({ ...formData, username: e.target.value })}
+            />
+            <IdCard className="absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-primary" />
+          </div>
+
+          {/* Full Name Input */}
           <div className="mb-4 relative">
             <input
               className="w-full p-2 rounded-lg bg-base-100 text-base-content placeholder:text-base-content/60 focus:outline-none focus:ring-2 focus:ring-primary focus:placeholder-opacity-0 transition duration-300"

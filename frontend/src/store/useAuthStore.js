@@ -4,7 +4,7 @@ import toast from "react-hot-toast";
 import { io } from "socket.io-client";
 
 
-const BASE_URL = import.meta.env.MODE === "development" ? "http://localhost:5001/api" : "/";
+const BASE_URL = import.meta.env.MODE === "development" ? "http://localhost:5001" : "/";
 
 export const useAuthStore = create((set, get) => ({
   authUser: null,
@@ -104,5 +104,21 @@ export const useAuthStore = create((set, get) => ({
 
   disconnectSocket: () => {
     if(get().socket?.connected) get().socket?.disconnect();
+  },
+
+  deleteAccount: async () => {
+    try {
+      const confirmDelete = window.confirm("Are you sure you want to delete your account? This action cannot be undone.");
+      if (!confirmDelete) return;
+
+      await axiosInstance.delete("/auth/delete");
+      set({ authUser: null });
+      toast.success("Account deleted successfully!");
+
+      get().disconnectSocket();
+    } catch (error) {
+      console.error("Error deleting account:", error.message);
+      toast.error(error.response?.data?.message || "Failed to delete account.");
+    }
   },
 }));

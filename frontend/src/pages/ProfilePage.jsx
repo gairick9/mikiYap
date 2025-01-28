@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useAuthStore } from "../store/useAuthStore";
-import { Camera, Mail, User } from "lucide-react";
+import { Camera, Mail, User,IdCard } from "lucide-react";
 
 const ProfilePage = () => {
-  const { authUser, isUpdatingProfile, updateProfile } = useAuthStore();
+  const { authUser, isUpdatingProfile, updateProfile, deleteAccount } = useAuthStore();
 
   const [selectedImg, setSelectedImg] = useState(null);
 
@@ -31,7 +31,7 @@ const ProfilePage = () => {
       ></div>
 
       {/* Profile Card */}
-      <div className="relative z-10 bg-white bg-opacity-10 rounded-xl shadow-xl p-4 max-w-4xl w-full backdrop-blur-lg border border-white border-opacity-20">
+      <div className="relative z-10 bg-white bg-opacity-10 rounded-xl shadow-xl p-4 mt-14 max-w-4xl w-full backdrop-blur-lg border border-white border-opacity-20">
         <h2 className="text-center text-2xl font-bold text-primary-content mb-6">
           Your Profile Information
         </h2>
@@ -72,10 +72,20 @@ const ProfilePage = () => {
               </p>
             </div>
 
-            {/* Full Name Section */}
+            {/* User Name Section */}
             <div className="space-y-1.5">
               <div className="text-sm text-base-content flex items-center gap-2">
                 <User className="w-4 h-4" />
+               Username
+              </div>
+              <p className="w-full p-3 rounded-lg bg-base-100 text-base-content">
+                {authUser?.username}
+              </p>
+            </div>
+            {/* Full Name Section */}
+            <div className="space-y-1.5">
+              <div className="text-sm text-base-content flex items-center gap-2">
+                <IdCard className="w-4 h-4" />
                 Full Name
               </div>
               <p className="w-full p-3 rounded-lg bg-base-100 text-base-content">
@@ -95,26 +105,39 @@ const ProfilePage = () => {
             </div>
           </div>
 
-          {/* Right Column */}
-          <div className="flex-1 bg-base-100 bg-opacity-20 p-4 rounded-lg">
-            <h2 className="text-lg font-medium text-primary-content mb-4">
-              Account Information
-            </h2>
-            <div className="space-y-3 text-sm text-base-content">
-              <div className="flex items-center justify-between py-2 border-b border-zinc-700">
-                <span>Member Since</span>
-                <span>
-                  {authUser.createdAt
-                    ? new Date(authUser.createdAt).toLocaleDateString("en-GB")
-                    : ""}
-                </span>
+            {/* Right Column */}
+            <div className="flex-1 bg-base-100 bg-opacity-20 p-4 rounded-lg flex flex-col justify-between">
+              {/* Top Section */}
+              <div>
+                <h2 className="text-lg font-medium text-primary-content mb-4">
+                  Account Information
+                </h2>
+                <div className="space-y-3 text-sm text-base-content">
+                  <div className="flex items-center justify-between py-2 border-b border-zinc-700">
+                    <span>Member Since</span>
+                    <span>
+                      {authUser.createdAt
+                        ? new Date(authUser.createdAt).toLocaleDateString("en-GB")
+                        : ""}
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between py-2">
+                    <span>Account Status</span>
+                    <span className="text-green-500">Active</span>
+                  </div>
+                </div>
               </div>
-              <div className="flex items-center justify-between py-2">
-                <span>Account Status</span>
-                <span className="text-green-500">Active</span>
+
+              {/* Bottom Section */}
+              <div className="mt-8">
+                <button
+                  onClick={deleteAccount}
+                  className="w-full bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600 transition-all"
+                >
+                  Delete Account
+                </button>
               </div>
             </div>
-          </div>
         </div>
       </div>
     </div>

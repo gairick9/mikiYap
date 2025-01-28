@@ -6,14 +6,14 @@ import { Eye, EyeOff, Loader2, Mail } from "lucide-react";
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
-    email: "",
+    emailOrUsername: "", // Changed from email to emailOrUsername
     password: "",
   });
   const { login, isLoggingIn } = useAuthStore();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    login(formData);
+    login(formData); // Send emailOrUsername and password to the backend
   };
 
   return (
@@ -33,12 +33,12 @@ const LoginPage = () => {
           <div className="mb-4 relative">
             <input
               className="w-full p-2 rounded-lg bg-base-100 text-base-content placeholder:text-base-content/60 focus:outline-none focus:ring-2 focus:ring-primary focus:placeholder-opacity-0 transition duration-300"
-              type="email"
-              id="email"
-              placeholder="Email ID"
-              value={formData.email}
+              type="text" // Changed from "email" to "text"
+              id="emailOrUsername"
+              placeholder="Username / Email"
+              value={formData.emailOrUsername} // Updated key
               onChange={(e) =>
-                setFormData({ ...formData, email: e.target.value })
+                setFormData({ ...formData, emailOrUsername: e.target.value }) // Updated state
               }
             />
             <Mail className="absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-primary" />
